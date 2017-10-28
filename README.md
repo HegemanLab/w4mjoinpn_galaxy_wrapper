@@ -8,7 +8,7 @@ a suite of Galaxy tools for processing and analyzing metabolomics data.
   * http://workflow4metabolomics.org
   * https://github.com/workflow4metabolomics
   
-W4M uses the XCMS package (Smith *et al.*, 2008 http://dx.doi.org/10.1021/ac051437y) to extract features and align 
+W4M uses the XCMS package (Smith *et al.*, 2006 http://dx.doi.org/10.1021/ac051437y) to extract features and align 
 their retention times among multiple samples. 
 
 After peak extraction and alignment, W4M uses the CAMERA package (Kuhl *et al.*, 2012 http://dx.doi.org/10.1021/ac202450g) 
