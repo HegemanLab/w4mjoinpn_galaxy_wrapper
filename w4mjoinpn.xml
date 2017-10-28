@@ -1,0 +1,51 @@
+<tool id="w4mjoinpn" name="Join +/- Ions" version="0.98.0">
+  <description>Join positive and negative ionization-mode W4M datasets for the same samples</description>
+  <requirements>
+     <requirement type="package" version="8.25">coreutils</requirement>
+  </requirements>
+  <stdio>
+      <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+      $__tool_directory__/w4mjoinpn.sh
+        dmneg $dmneg 
+        dmpos $dmpos 
+        dmout $dmout 
+        smneg $smneg 
+        smpos $smpos 
+        smout $smout 
+        vmneg $vmneg 
+        vmpos $vmpos 
+        vmout $vmout 
+  ]]></command>
+  <inputs>
+    <param name="dmpos" label="Data matrix positive" type="data" format="tabular" help="Positive ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+    <param name="smpos" label="Sample metadata positive" type="data" format="tabular" help="Positive ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+    <param name="vmpos" label="Variable metadata positive" type="data" format="tabular" help="Positive ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+    <param name="dmneg" label="Data matrix negative" type="data" format="tabular" help="Negative ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+    <param name="smneg" label="Sample metadata negative" type="data" format="tabular" help="Negative ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+    <param name="vmneg" label="Variable metadata negative" type="data" format="tabular" help="Negative ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+  </inputs>
+  <outputs>
+    <data name="dmout" label="${dmneg.name}.posneg" format="tabular" ></data>
+    <data name="smout" label="${smneg.name}.posneg" format="tabular" ></data>
+    <data name="vmout" label="${vmneg.name}.posneg" format="tabular" ></data>
+  </outputs>
+  <help><![CDATA[
+      help wanted
+  ]]></help>
+  <citations>
+    <!-- <citation type="doi">DOI.yet.to.be.determined</citation> -->
+    <citation type="bibtex">
+      @misc{
+        w4mjoinpn_galaxy_wrapper,
+        author = {Eschenlauer, Arthur},
+        year = {2017},
+        title = {w4mjoinpn_galaxy_wrapper},
+        publisher = {GitHub},
+        journal = {GitHub repository},
+        url = {https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper},
+      }
+    </citation>
+  </citations>
+</tool>
