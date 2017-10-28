@@ -1,12 +1,15 @@
-<tool id="w4mjoinpn" name="Join +/- Ions" version="0.98.0">
+<tool id="w4mjoinpn" name="Join +/- Ions" version="0.98.1">
   <description>Join positive and negative ionization-mode W4M datasets for the same samples</description>
   <requirements>
      <requirement type="package" version="8.25">coreutils</requirement>
+     <requirement type="package" version="4.2.3.dev0">sed</requirement>
   </requirements>
   <stdio>
       <exit_code range="1:" level="fatal" />
   </stdio>
   <command><![CDATA[
+      echo "These are the the paths to the tools used by this script:" 1>&2 ;
+      which which cut sed head paste cat diff cp 1>&2 ;
       $__tool_directory__/w4mjoinpn.sh
         dmneg $dmneg 
         dmpos $dmpos 

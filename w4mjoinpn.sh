@@ -98,14 +98,35 @@ cat  <( head -n 1 ${VMNEG} )   <( sed -n -e '1 d; s/^/N/; p;' ${VMNEG} )  <( sed
 cat  <( head -n 1 ${DMNEG} )   <( sed -n -e '1 d; s/^/N/; p;' ${DMNEG} )  <( sed -n -e '1 d; s/^/P/; p;' ${DMPOS} ) > ${DMOUT}
 
 # Determine whether negative ionization-mode sampleMetadata file's column three is titled "polarity"
-set -- `head -n 1 ${SMNEG} | cut -f 3`
-echo args are now: $@
-if [ "$1" = "polarity" ]; then
+
+# find the ordinal number of the first column named "polarity" of the negative ionization-mode sampleMetadata file, if any
+set -- `head -n 1 ${SMNEG}`
+POLARITY=0
+MAXCOUNT=0
+while [[ $# -gt 0 ]]; do
+  MAXCOUNT=$(( MAXCOUNT + 1 ))
+  key="$1"
+  case $key in
+    polarity)
+      if [ $POLARITY -eq 0 ]; then POLARITY=${MAXCOUNT}; fi
+      shift # past argument
+      ;;
+    *)    # unknown option
+      shift # past argument
+      ;;
+  esac
+done
+echo "Polarity is in column $POLARITY of ${SMNEG}"
+echo "There  are  $MAXCOUNT columns  in  ${SMNEG}"
+
+if [ ${POLARITY} -gt 1 ]; then
+  COLBEFORE=$(( POLARITY - 1 ))
+  COLAFTER=$(( POLARITY + 1 ))
   # Replace all entries in column three of negative ionization-mode sampleMetadata file with "posneg" in respective output file
-  if [[ -n $4 ]]; then
-    paste <( cut -f 1-2 ${SMNEG} ) <( cut -f 3 ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  <( cut -f 4- ${SMNEG} )  > ${SMOUT}
+  if [ ${POLARITY} -lt ${MAXCOUNT} ]; then
+    paste <( cut -f 1-${COLBEFORE} ${SMNEG} ) <( cut -f ${POLARITY} ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  <( cut -f ${COLAFTER}- ${SMNEG} )  > ${SMOUT}
   else
-    paste <( cut -f 1-2 ${SMNEG} ) <( cut -f 3 ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  > ${SMOUT}
+    paste <( cut -f 1-${COLBEFORE} ${SMNEG} ) <( cut -f ${POLARITY} ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  > ${SMOUT}
   fi
 else
   # Copy negative ionization-mode sampleMetadata file to the respective output file
