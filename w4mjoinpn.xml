@@ -35,7 +35,8 @@
       help wanted
   ]]></help>
   <citations>
-    <!-- <citation type="doi">DOI.yet.to.be.determined</citation> -->
+    <citation type="doi">10.5281/zenodo.1038290</citation>
+    <!--
     <citation type="bibtex">
       @misc{
         w4mjoinpn_galaxy_wrapper,
@@ -47,5 +48,6 @@
         url = {https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper},
       }
     </citation>
+    -->
   </citations>
 </tool>
