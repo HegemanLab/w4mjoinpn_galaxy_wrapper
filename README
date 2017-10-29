@@ -1,1 +1,5 @@
-README.md
+This tool joins two sets of post-XCMS post-CAMERA Workflow4Metabolomics datasets
+(i.e., sampleMetadata, variableMetadata, dataMatrix),
+one gathered in negative ionization-mode and the other in positive ionization-mode.
+
+Please see https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper for details.
