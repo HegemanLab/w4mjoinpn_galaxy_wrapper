@@ -87,9 +87,10 @@ echo "variableMetadata positive_mode ${VMPOS}"
 echo "variableMetadata negative_mode ${VMNEG}"
 echo "variableMetadata joined_modes  ${VMOUT}"
 
-# Check that sample names are the same, in the same order, for both datasets
-diff -q <( head -n 1 ${DMPOS}) <( head -n 1 ${DMNEG} ) || { echo samplenames in dataMatrix files differ; exit 1; }
-diff -q <( cut -f 1 ${SMPOS} ) <( cut -f 1 ${SMNEG}  ) || { echo samplenames in sampleMetadata files differ; exit 1; }
+# Check that sample names are the same, in the same order, for the dataMatrix in both datasets
+if [ "$( head -n 1 ${DMPOS} )" != "$( head -n 1 ${DMNEG} )" ]; then echo sample names in dataMatrix files differ;     exit 1; fi
+# Check that sample names are the same, in the same order, for the sampleMetadata in both datasets
+if [ "$( cut  -f 1 ${SMPOS} )" != "$( cut  -f 1 ${SMNEG} )" ]; then echo sample names in sampleMetadata files differ; exit 1; fi
 
 # Concatenate variableMetadata datasets to respective output file
 cat  <( head -n 1 ${VMNEG} )   <( sed -n -e '1 d; s/^/N/; p;' ${VMNEG} )  <( sed -n -e '1 d; s/^/P/; p;' ${VMPOS} ) > ${VMOUT}
@@ -119,17 +120,20 @@ done
 echo "Polarity is in column $POLARITY of ${SMNEG}"
 echo "There  are  $MAXCOUNT columns  in  ${SMNEG}"
 
+# Copy sampleMetadata from negative ionization-mode to output file, replacing polarity if possible
 if [ ${POLARITY} -gt 1 ]; then
   COLBEFORE=$(( POLARITY - 1 ))
   COLAFTER=$(( POLARITY + 1 ))
   # Replace all entries in column three of negative ionization-mode sampleMetadata file with "posneg" in respective output file
   if [ ${POLARITY} -lt ${MAXCOUNT} ]; then
+    # Handle the case where polarity is not in the last column
     paste <( cut -f 1-${COLBEFORE} ${SMNEG} ) <( cut -f ${POLARITY} ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  <( cut -f ${COLAFTER}- ${SMNEG} )  > ${SMOUT}
   else
+    # Handle the case where polarity is in the last column
     paste <( cut -f 1-${COLBEFORE} ${SMNEG} ) <( cut -f ${POLARITY} ${SMNEG} | sed -n -e '2,$ s/.*/posneg/; p;' )  > ${SMOUT}
   fi
 else
-  # Copy negative ionization-mode sampleMetadata file to the respective output file
+  # Handle the case where polarity was not found: Copy negative ionization-mode sampleMetadata file to the respective output file
   cp ${SMNEG} ${SMOUT}
 fi
 

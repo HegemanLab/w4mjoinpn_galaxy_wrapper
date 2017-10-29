@@ -9,7 +9,7 @@
   </stdio>
   <command><![CDATA[
       echo "These are the the paths to the tools used by this script:" 1>&2 ;
-      which which cut sed head paste cat diff cp 1>&2 ;
+      which cut sed head paste cat cp bash test 1>&2 ;
       $__tool_directory__/w4mjoinpn.sh
         dmneg $dmneg 
         dmpos $dmpos 
@@ -44,11 +44,8 @@
 Motivation
 ----------
 
-Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014) provides 
-a suite of Galaxy tools for processing and analyzing metabolomics data.
-
-  * http://workflow4metabolomics.org
-  * https://github.com/workflow4metabolomics
+Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014; http://workflow4metabolomics.org; https://github.com/workflow4metabolomics) 
+provides a suite of Galaxy tools for processing and analyzing metabolomics data.
   
 W4M uses the XCMS package (Smith *et al.*, 2006) to extract features and align 
 their retention times among multiple samples. 
@@ -59,16 +56,15 @@ After peak extraction and alignment, W4M uses the CAMERA package (Kuhl *et al.*,
 Both of these steps are done using data collected in a single ionization mode (i.e., only negative or only positive)
 because it would not make sense to attempt to use CAMERA otherwise.
 
-However, multivariate analysis in general, and particularly the "False Discovery Rate" adjustment in hypothesis testing,
-would both benefit from having all variables (features), negative and positive, combined for one analysis.  It is also
-cumbersome to be forced to do an analysis twice, once for each ionization mode.
+However, performing and interpreting statistical analysis would be more convenient and statistically powerful 
+when all variables (features), negative and positive, are combined for one analysis.
 
 
 Description
 -----------
 
 This tool joins two sets of MS1 datasets for **exactly** the same set of samples, where one was gathered in positive ionization
-mode and the other in negative ionization-mode, for reasons set forth above.
+mode and the other in negative ionization-mode, for reasons set forth above.  These datasets must be post-XCMS and post-CAMERA.
 
 This tool will fail:
 
@@ -79,14 +75,51 @@ Otherwise:
 
 * the two dataMatrix files are concatenated, and the names of features identified from positive ionization-mode data are prefixed with "P"; negative, with "N".
 * the two variableMetadata files are concatenated, and the names of features are prefixed in the same way.
-* if sampleMetadata has a polarity column, its value is set to "posneg" in the output.
-  * Technically, the sampleMetadata file in the output is derived from the negative ionization-mode sampleMetadata.
+* if sampleMetadata has a polarity column, its value is set to "posneg" in the output.  (In fact, the sampleMetadata file in the output is copied from the negative ionization-mode sampleMetadata, with the polarity replaced.)
+
+Workflow Position
+-----------------
+
+* Upstream tool category: Preprocessing
+* Downstream tool categories: Normalisation, Statistical Analysis, Quality Control, Filter and Sort
+
+Working example
+---------------
+
+**Input files**
+
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Input File                                  | Download from URL                                                                                                     |
+  +=============================================+=======================================================================================================================+
+  | Data matrix, negative ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_dataMatrix_neg.tsv       |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata, negative ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_sampleMetadata_neg.tsv   |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata, negative ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_variableMetadata_neg.tsv |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Data matrix, positive ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_dataMatrix_pos.tsv       |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata, positive ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_sampleMetadata_pos.tsv   |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata, positive ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_variableMetadata_pos.tsv |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+
+**Output files**
+
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Output File                                 | Download from URL                                                                                                     |
+  +=============================================+=======================================================================================================================+
+  | Data matrix                                 | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_dataMatrix.tsv          |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata                             | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_sampleMetadata.tsv      |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata                           | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_variableMetadata.tsv    |
+  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
 
   ]]></help>
   <citations>
+    <citation type="doi">10.5281/zenodo.1038289</citation>
     <!--
-    <citation type="doi">10.5281/zenodo.1038290</citation>
-    -->
     <citation type="bibtex">
       @misc{
         w4mjoinpn_galaxy_wrapper,
@@ -99,6 +132,7 @@ Otherwise:
         doi = 10.5281/zenodo.1038290
       }
     </citation>
+    -->
     <!-- Giacomoni, 2014 Workflow4Metabolomics: a collaborative research infrastructure for computational metabolomics -->
     <citation type="doi">10.1093/bioinformatics/btu813</citation>
     <!-- Kuhl et al., 2012 -->

@@ -1,0 +1,14 @@
+categories: [Metabolomics]
+description: Join positive- and negative-mode W4M datasets
+homepage_url: https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper
+long_description: Join positive and negative ionization-mode W4M datasets for the same samples
+name: w4mjoinpn
+owner: eschen42
+remote_repository_url: https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper/tree/master
+include:
+  - .shed.yml
+  - LICENSE
+  - README
+  - README.md
+  - w4mjoinpn.xml
+  - w4mjoinpn.sh
