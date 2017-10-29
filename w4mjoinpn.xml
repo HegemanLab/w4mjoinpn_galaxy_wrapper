@@ -57,7 +57,7 @@ Both of these steps are done using data collected in a single ionization mode (i
 because it would not make sense to attempt to use CAMERA otherwise.
 
 However, performing and interpreting statistical analysis would be more convenient and statistically powerful 
-when all variables (features), negative and positive, are combined for one analysis.
+with all variables (features), negative and positive, combined for one analysis.
 
 
 Description
