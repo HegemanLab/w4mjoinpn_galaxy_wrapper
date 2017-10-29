@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038289.svg)](https://doi.org/10.5281/zenodo.1038289)
+
 # w4mjoinpn_galaxy_wrapper
 
 This tool joins two sets of MS1 datasets for **exactly** the same set of samples, where one was gathered in positive ionization
