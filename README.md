@@ -3,15 +3,13 @@
 This tool joins two sets of MS1 datasets for **exactly** the same set of samples, where one was gathered in positive ionization
 mode and the other in negative ionization-mode, for reasons set forth below.  
 
-Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014 http://dx.doi.org/10.1093/bioinformatics/btu813) provides 
-a suite of Galaxy tools for processing and analyzing metabolomics data.
-  * http://workflow4metabolomics.org
-  * https://github.com/workflow4metabolomics
+Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014, http://dx.doi.org/10.1093/bioinformatics/btu813; http://workflow4metabolomics.org; 
+https://github.com/workflow4metabolomics) provides a suite of Galaxy tools for processing and analyzing metabolomics data.
   
 W4M uses the XCMS package (Smith *et al.*, 2006 http://dx.doi.org/10.1021/ac051437y) to extract features and align 
 their retention times among multiple samples. 
 
-After peak extraction and alignment, W4M uses the CAMERA package (Kuhl *et al.*, 2012 http://dx.doi.org/10.1021/ac202450g) 
+After peak extraction and alignment, W4M uses the CAMERA package (Kuhl *et al.*, 2012, http://dx.doi.org/10.1021/ac202450g) 
 "to postprocess XCMS feature lists and to collect all features related to a compound into a compound spectrum."
 
 Both of these steps are done using data collected in a single ionization mode (i.e., only negative or only positive)
