@@ -2,8 +2,8 @@
 
 # w4mjoinpn_galaxy_wrapper
 
-This tool joins two sets of MS1 datasets for **exactly** the same set of samples, where one was gathered in positive ionization
-mode and the other in negative ionization-mode, for reasons set forth below.  
+This tool joins two sets of MS1 datasets for **exactly** the same set of samples, where one was gathered in positive 
+ionization-mode and the other in negative ionization-mode, for reasons set forth below.  
 
 Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014, http://dx.doi.org/10.1093/bioinformatics/btu813; http://workflow4metabolomics.org; 
 https://github.com/workflow4metabolomics) provides a suite of Galaxy tools for processing and analyzing metabolomics data.
