@@ -9,6 +9,5 @@ include:
   - .shed.yml
   - LICENSE
   - README
-  - README.md
   - w4mjoinpn.xml
   - w4mjoinpn.sh
