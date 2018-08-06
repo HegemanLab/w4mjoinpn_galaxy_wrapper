@@ -31,3 +31,13 @@ are prefixed with "P"; negative, with "N".
   * the two variableMetadata files are concatenated, and the names of features are prefixed in the same way.
   * if sampleMetadata has a polarity column, its value is set to "posneg" in the output.
     * Technically, the sampleMetadata file in the output is derived from the negative ionization-mode sampleMetadata.
+
+# Releases
+
+## 0.98.2 
+
+Updates for conformance with iuc (Intergalactic Utilities Commission) best-practices
+
+## 0.98.1
+
+First release

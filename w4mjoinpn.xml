@@ -1,40 +1,44 @@
-<tool id="w4mjoinpn" name="Join +/- Ions" version="0.98.1">
-  <description>Join positive and negative ionization-mode W4M datasets for the same samples</description>
-  <requirements>
-     <requirement type="package" version="8.25">coreutils</requirement>
-     <requirement type="package" version="4.2.3.dev0">sed</requirement>
-  </requirements>
-  <stdio>
-      <exit_code range="1:" level="fatal" />
-  </stdio>
-  <command><![CDATA[
-      echo "These are the the paths to the tools used by this script:" 1>&2 ;
-      which cut sed head paste cat cp bash test 1>&2 ;
-      $__tool_directory__/w4mjoinpn.sh
-        dmneg $dmneg 
-        dmpos $dmpos 
-        dmout $dmout 
-        smneg $smneg 
-        smpos $smpos 
-        smout $smout 
-        vmneg $vmneg 
-        vmpos $vmpos 
-        vmout $vmout 
-  ]]></command>
-  <inputs>
-    <param name="dmpos" label="Data matrix positive" type="data" format="tabular" help="Positive ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
-    <param name="smpos" label="Sample metadata positive" type="data" format="tabular" help="Positive ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
-    <param name="vmpos" label="Variable metadata positive" type="data" format="tabular" help="Positive ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
-    <param name="dmneg" label="Data matrix negative" type="data" format="tabular" help="Negative ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
-    <param name="smneg" label="Sample metadata negative" type="data" format="tabular" help="Negative ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
-    <param name="vmneg" label="Variable metadata negative" type="data" format="tabular" help="Negative ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
-  </inputs>
-  <outputs>
-    <data name="dmout" label="${dmneg.name}.posneg" format="tabular" ></data>
-    <data name="smout" label="${smneg.name}.posneg" format="tabular" ></data>
-    <data name="vmout" label="${vmneg.name}.posneg" format="tabular" ></data>
-  </outputs>
-  <help><![CDATA[
+<tool id="w4mjoinpn" name="Join +/- Ions" version="0.98.2">
+    <description>Join positive and negative ionization-mode W4M datasets for the same samples</description>
+    <requirements>
+        <requirement type="package" version="8.25">coreutils</requirement>
+        <requirement type="package" version="4.2.3.dev0">sed</requirement>
+    </requirements>
+    <stdio>
+            <exit_code range="1:" level="fatal" />
+    </stdio>
+    <command  detect_errors="aggressive"><![CDATA[
+            $__tool_directory__/w4mjoinpn.sh
+                dmneg $dmneg 
+                dmpos $dmpos 
+                dmout $dmout 
+                smneg $smneg 
+                smpos $smpos 
+                smout $smout 
+                vmneg $vmneg 
+                vmpos $vmpos 
+                vmout $vmout 
+    ]]></command>
+    <inputs>
+        <param name="dmpos" label="Data matrix positive" type="data" format="tabular" 
+            help="Positive ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+        <param name="smpos" label="Sample metadata positive" type="data" format="tabular" 
+            help="Positive ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+        <param name="vmpos" label="Variable metadata positive" type="data" format="tabular" 
+            help="Positive ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+        <param name="dmneg" label="Data matrix negative" type="data" format="tabular" 
+            help="Negative ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+        <param name="smneg" label="Sample metadata negative" type="data" format="tabular" 
+            help="Negative ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+        <param name="vmneg" label="Variable metadata negative" type="data" format="tabular" 
+            help="Negative ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+    </inputs>
+    <outputs>
+        <data name="dmout" label="${dmneg.name}.posneg" format="tabular" ></data>
+        <data name="smout" label="${smneg.name}.posneg" format="tabular" ></data>
+        <data name="vmout" label="${vmneg.name}.posneg" format="tabular" ></data>
+    </outputs>
+    <help><![CDATA[
 **Join positive and negative ionization-mode W4M datasets for the same samples**
 --------------------------------------------------------------------------------
 
@@ -46,7 +50,7 @@ Motivation
 
 Workflow4Metabolomics (W4M, Giacomoni *et al.*, 2014; http://workflow4metabolomics.org; https://github.com/workflow4metabolomics) 
 provides a suite of Galaxy tools for processing and analyzing metabolomics data.
-  
+
 W4M uses the XCMS package (Smith *et al.*, 2006) to extract features and align 
 their retention times among multiple samples. 
 
@@ -116,28 +120,13 @@ Working example
   | Variable metadata                           | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_variableMetadata.tsv    |
   +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
 
-  ]]></help>
-  <citations>
-    <citation type="doi">10.5281/zenodo.1038289</citation>
-    <!--
-    <citation type="bibtex">
-      @misc{
-        w4mjoinpn_galaxy_wrapper,
-        author = {Eschenlauer, Arthur},
-        year = {2017},
-        title = {w4mjoinpn_galaxy_wrapper},
-        publisher = {GitHub},
-        journal = {GitHub repository},
-        url = {https://github.com/HegemanLab/w4mjoinpn_galaxy_wrapper},
-        doi = 10.5281/zenodo.1038290
-      }
-    </citation>
-    -->
-    <!-- Giacomoni, 2014 Workflow4Metabolomics: a collaborative research infrastructure for computational metabolomics -->
-    <citation type="doi">10.1093/bioinformatics/btu813</citation>
-    <!-- Kuhl et al., 2012 -->
-    <citation type="doi">10.1021/ac202450g</citation>
-    <!-- Smith, 2006 XCMS: Processing Mass Spectrometry Data for Metabolite Profiling Using Nonlinear Peak Alignment, Matching, and Identification. -->
-    <citation type="doi">10.1021/ac051437y</citation>
-  </citations>
+    ]]></help>
+    <citations>
+        <!-- Giacomoni, 2014 Workflow4Metabolomics: a collaborative research infrastructure for computational metabolomics -->
+        <citation type="doi">10.1093/bioinformatics/btu813</citation>
+        <!-- Kuhl et al., 2012 CAMERA: An Integrated Strategy for Compound Spectra Extraction and Annotation of LC-MS Data Sets -->
+        <citation type="doi">10.1021/ac202450g</citation>
+        <!-- Smith, 2006 XCMS: Processing Mass Spectrometry Data for Metabolite Profiling Using Nonlinear Peak Alignment, Matching, and Identification. -->
+        <citation type="doi">10.1021/ac051437y</citation>
+    </citations>
 </tool>
