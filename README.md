@@ -1,4 +1,6 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038289.svg)](https://doi.org/10.5281/zenodo.1038289)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1038289.svg)](https://doi.org/10.5281/zenodo.1038289) Latest published release
+
+[![Build Status](https://travis-ci.org/HegemanLab/w4mcorcov_galaxy_wrapper.svg?branch=master)](https://travis-ci.org/HegemanLab/w4mcorcov_galaxy_wrapper) Current build status for master branch on GitHub
 
 # w4mjoinpn_galaxy_wrapper
 
