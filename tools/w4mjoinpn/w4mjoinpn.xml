@@ -2,42 +2,121 @@
     <description>Join positive and negative ionization-mode W4M datasets for the same samples</description>
     <requirements>
         <requirement type="package" version="8.25">coreutils</requirement>
+        <!--
         <requirement type="package" version="4.2.3.dev0">sed</requirement>
+        -->
+        <requirement type="package" version="4.4">sed</requirement>
     </requirements>
     <stdio>
             <exit_code range="1:" level="fatal" />
     </stdio>
     <command  detect_errors="aggressive"><![CDATA[
-            $__tool_directory__/w4mjoinpn.sh
+            pwd
+            ;
+            echo $__tool_directory__/w4mjoinpn.sh
+                vmneg $vmneg 
+                vmpos $vmpos 
+                vmout $vmout 
                 dmneg $dmneg 
                 dmpos $dmpos 
                 dmout $dmout 
                 smneg $smneg 
                 smpos $smpos 
                 smout $smout 
+                ;
+            $__tool_directory__/w4mjoinpn.sh
                 vmneg $vmneg 
                 vmpos $vmpos 
                 vmout $vmout 
+                dmneg $dmneg 
+                dmpos $dmpos 
+                dmout $dmout 
+                smneg $smneg 
+                smpos $smpos 
+                smout $smout 
     ]]></command>
     <inputs>
         <param name="dmpos" label="Data matrix positive" type="data" format="tabular" 
-            help="Positive ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+            help="Positive ionization-mode: variables &#10006; samples" />
         <param name="smpos" label="Sample metadata positive" type="data" format="tabular" 
-            help="Positive ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+            help="Positive ionization-mode: sample metadata, one row per sample" />
         <param name="vmpos" label="Variable metadata positive" type="data" format="tabular" 
-            help="Positive ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+            help="Positive ionization-mode: variable metadata, one row per variable" />
         <param name="dmneg" label="Data matrix negative" type="data" format="tabular" 
-            help="Negative ionization-mode: Features x samples (tabular data - decimal: '.'; missing: NA; mode: numerical; separator: tab character)" />
+            help="Negative ionization-mode: variables &#10006; samples" />
         <param name="smneg" label="Sample metadata negative" type="data" format="tabular" 
-            help="Negative ionization-mode: Samples x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+            help="Negative ionization-mode: sample metadata, one row per sample" />
         <param name="vmneg" label="Variable metadata negative" type="data" format="tabular" 
-            help="Negative ionization-mode: Features x metadata (tabular data - decimal: '.'; missing: NA; mode: character or numerical; separator: tab character)" />
+            help="Negative ionization-mode: variable metadata, one row per variable" />
     </inputs>
     <outputs>
         <data name="dmout" label="${dmneg.name}.posneg" format="tabular" ></data>
         <data name="smout" label="${smneg.name}.posneg" format="tabular" ></data>
         <data name="vmout" label="${vmneg.name}.posneg" format="tabular" ></data>
     </outputs>
+    <tests>
+        <!-- test 1 -->
+        <test>
+          <param name="dmpos" value="input_dataMatrix_pos.tsv"/>
+          <param name="dmneg" value="input_dataMatrix_neg.tsv"/>
+          <param name="smpos" value="input_sampleMetadata_pos.tsv"/>
+          <param name="smneg" value="input_sampleMetadata_neg.tsv"/>
+          <param name="vmpos" value="input_variableMetadata_pos.tsv"/>
+          <param name="vmneg" value="input_variableMetadata_neg.tsv"/>
+          <output name="dmout">
+            <assert_contents>
+              <has_text text="NM295T781" />
+              <has_text text="1177836.83774999" />
+              <has_text text="3552840.90153851" />
+            </assert_contents>
+          </output>
+          <output name="vmout">
+            <assert_contents>
+              <has_text text="NM295T781" />
+              <has_text text="M295.125T780.95" />
+              <has_text text="780.953277587891" />
+            </assert_contents>
+          </output>
+          <output name="smout">
+            <assert_contents>
+              <has_text text="Y5_1_RA4_01_212" />
+              <has_text text="posneg" />
+              <has_text text="Y13_1_RA6_01_214" />
+            </assert_contents>
+          </output>
+        </test>
+        <!-- test 2 -->
+        <test>
+          <param name="dmpos" value="input_dataMatrix_pos.tsv"/>
+          <param name="dmneg" value="input_dataMatrix_neg.tsv"/>
+          <param name="smpos" value="input_sampleMetadata_pos.tsv"/>
+          <param name="smneg" value="input_sampleMetadata_neg_4col.tsv"/>
+          <param name="vmpos" value="input_variableMetadata_pos.tsv"/>
+          <param name="vmneg" value="input_variableMetadata_neg.tsv"/>
+          <output name="dmout">
+            <assert_contents>
+              <has_text text="NM295T781" />
+              <has_text text="1177836.83774999" />
+              <has_text text="3552840.90153851" />
+            </assert_contents>
+          </output>
+          <output name="vmout">
+            <assert_contents>
+              <has_text text="NM295T781" />
+              <has_text text="M295.125T780.95" />
+              <has_text text="780.953277587891" />
+            </assert_contents>
+          </output>
+          <output name="smout">
+            <assert_contents>
+              <has_text text="Y5_1_RA4_01_212" />
+              <has_text text="posneg" />
+              <has_text text="y5" />
+              <has_text text="bar" />
+            </assert_contents>
+          </output>
+        </test>
+    </tests>
     <help><![CDATA[
 **Join positive and negative ionization-mode W4M datasets for the same samples**
 --------------------------------------------------------------------------------
@@ -92,33 +171,33 @@ Working example
 
 **Input files**
 
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Input File                                  | Download from URL                                                                                                     |
-  +=============================================+=======================================================================================================================+
-  | Data matrix, negative ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_dataMatrix_neg.tsv       |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Sample metadata, negative ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_sampleMetadata_neg.tsv   |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Variable metadata, negative ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_variableMetadata_neg.tsv |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Data matrix, positive ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_dataMatrix_pos.tsv       |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Sample metadata, positive ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_sampleMetadata_pos.tsv   |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Variable metadata, positive ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/input_variableMetadata_pos.tsv |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-
-**Output files**
-
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Output File                                 | Download from URL                                                                                                     |
-  +=============================================+=======================================================================================================================+
-  | Data matrix                                 | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_dataMatrix.tsv          |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Sample metadata                             | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_sampleMetadata.tsv      |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
-  | Variable metadata                           | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/test-data/output_variableMetadata.tsv    |
-  +---------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Input File                                  | Download from URL                                                                                                                        |
+  +=============================================+==========================================================================================================================================+
+  | Data matrix, negative ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_dataMatrix_neg.tsv          |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata, negative ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_sampleMetadata_neg.tsv      |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata, negative ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_variableMetadata_neg.tsv    |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Data matrix, positive ionization-mode       | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_dataMatrix_pos.tsv          |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata, positive ionization-mode   | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_sampleMetadata_pos.tsv      |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata, positive ionization-mode | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/input_variableMetadata_pos.tsv    |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+                                                                                                                                                                                          
+**Output files**                                                                                                                                                                          
+                                                                                                                                                                                          
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Output File                                 | Download from URL                                                                                                                        |
+  +=============================================+==========================================================================================================================================+
+  | Data matrix                                 | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/expected_dataMatrix.tsv           |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Sample metadata                             | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/expected_sampleMetadata.tsv       |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
+  | Variable metadata                           | https://raw.githubusercontent.com/HegemanLab/w4mjoinpn_galaxy_wrapper/master/tools/w4mjoinpn/test-data/expected_variableMetadata.tsv     |
+  +---------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------+
 
     ]]></help>
     <citations>
@@ -129,4 +208,6 @@ Working example
         <!-- Smith, 2006 XCMS: Processing Mass Spectrometry Data for Metabolite Profiling Using Nonlinear Peak Alignment, Matching, and Identification. -->
         <citation type="doi">10.1021/ac051437y</citation>
     </citations>
-</tool>
+    <!--
+     vim:et:sw=4:ts=4
+--> </tool>
